@@ -120,8 +120,8 @@ int main ()
 	BN_hex2bn(&e, "010001");
 	BN_hex2bn(&d, "74D806F9F3A62BAE331FFE3F0A68AFE35B3D2E4794148AACBC26AA381CD7D30D");
 
-	BN_mod_exp(sig2000, m2000, d, n, ctx);
-	BN_mod_exp(sig3000, m3000, d, n, ctx);
+	BN_mod_exp(sig2000, m2000, d, n, ctx); // sig2000 = (m2000^d) mod n
+	BN_mod_exp(sig3000, m3000, d, n, ctx); // sig3000 = (m3000^d) mod n
 
 	printBN("n = ", n);
 	printBN("e = ", e);
@@ -139,26 +139,19 @@ int main ()
 	BIGNUM *n = BN_new();
 	BIGNUM *m = BN_new();
 	BIGNUM *e = BN_new();
-	BIGNUM *d = BN_new();
-	BIGNUM *sig = BN_new();
-	BIGNUM *sig_unknown = BN_new();
-	char msg_text[] = "Launch a missile.";
+	BIGNUM *s = BN_new();
 	
-	BN_hex2bn(&n, "AE1CD4DC432798D933779FBD46C6E1247F0CF1233595113AA51B450F18116115");
-	BN_hex2bn(&m, "4c61756e63682061206d697373696c652e");
+	BN_hex2bn(&s, "643D6F34902D9C7EC90CB0B2BCA36C47FA37165C0005CAB026C0542CBDB6802F");
 	BN_hex2bn(&e, "010001");
-	BN_hex2bn(&d, "74D806F9F3A62BAE331FFE3F0A68AFE35B3D2E4794148AACBC26AA381CD7D30D");
-	BN_hex2bn(&sig, "643D6F34902D9C7EC90CB0B2BCA36C47FA37165C0005CAB026C0542CBDB6802F");
+	BN_hex2bn(&n, "AE1CD4DC432798D933779FBD46C6E1247F0CF1233595113AA51B450F18116115");
 
-	BN_mod_exp(sig_unknown, m, d, n, ctx);
+	BN_mod_exp(m, s, e, n, ctx); // m = (sig^e) mod n
 
-	printBN("n = ", n);
+	printBN("s = ", s);
 	printBN("e = ", e);
-	printBN("d = ", d);
+	printBN("n = ", n);
 
-	printBN("verified signature = ", sig);
-
-	printBN("unknown signature = ", sig_unknown);
+	printBN("m = ", m);
 
 	return 0;
 }
